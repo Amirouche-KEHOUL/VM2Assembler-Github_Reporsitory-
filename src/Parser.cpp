@@ -1,7 +1,7 @@
 #include "Parser.h"
 using namespace std;
 
-Parser::Parser(string inputfile)
+Parser::Parser(string inputfile)// open the input file (.vm)
 {
     avmfile.open(inputfile);
     inputfilename=inputfile;
@@ -41,8 +41,10 @@ const string Parser::commandType()//returns a const represent the type of the co
 
     while ((currentCommand[i]!=' ')&&(i!=currentCommand.size()))
     {
-        command=command+currentCommand[i];
-        i=i+1;
+
+            command=command+currentCommand[i];
+            i=i+1;
+
     }
     return map_typeofcommand[command];
 }
@@ -90,6 +92,15 @@ string Parser::arg1()// returns the first arg of the current command
             }
             if (commandType()=="C_GOTO")
             {
+                i=4;
+                while ((currentCommand[i]!=' ')&&(i!=currentCommand.size()))
+                {
+                    arg=arg+currentCommand[i];
+                    i=i+1;
+                }
+            }
+            if (commandType()=="C_IF")
+            {
                 i=8;
                 while ((currentCommand[i]!=' ')&&(i!=currentCommand.size()))
                 {
@@ -97,6 +108,7 @@ string Parser::arg1()// returns the first arg of the current command
                     i=i+1;
                 }
             }
+
             if (commandType()=="C_FUNCTION")
             {
                 i=9;
@@ -123,7 +135,7 @@ int  Parser::arg2()// returns the second arg of the current command
             i=i+1;
         }
         reverse(arg.begin(),arg.end());
-    return stoi(arg);// convert string to int
+        return stoi(arg);// convert string to int
     }
 
 }

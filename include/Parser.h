@@ -39,7 +39,7 @@ public:
     //Default destructor
     ~Parser();
     bool hasMoreCommands(); // Are there more commands in the imput
-    void advance();// reads the next command from and makes it the current command (only if hasMoreCommands is true)
+    void advance();// reads the next command from input file and makes it the current command (only if hasMoreCommands is true)
     const string commandType();//returns a const represent the type of the command
     string arg1();// returns the first arg of the current command
     int arg2();// returns the second arg of the current command

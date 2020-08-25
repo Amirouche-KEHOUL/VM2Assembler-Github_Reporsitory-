@@ -443,3 +443,38 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index,string in
         }
     }
 }
+void Codewriter::WriteInit()
+{
+     assamblyfile<< "//Bootstrap code"<<endl;
+     assamblyfile<< "@256"<<endl; //SP=256
+     assamblyfile<< "D=A"<<endl;
+     assamblyfile<< "@0"<<endl;
+     assamblyfile<< "M=D"<<endl;
+}
+void Codewriter::WriteLabel(string label)
+{
+    assamblyfile<< "//Label"<<endl;
+    assamblyfile<<"("<<label<<")"<<endl;
+
+}
+void Codewriter::WriteGoto(string label)
+{
+    assamblyfile<< "//goto"<<endl;
+    assamblyfile<< "@"<<label<<endl;
+    assamblyfile<< "0;JMP"<<endl;
+
+}
+void Codewriter::WriteIf(string label)
+{
+    assamblyfile<< "//if-goto"<<endl;
+    assamblyfile<< "@SP"<<endl;
+    assamblyfile<< "A=M-1"<<endl;
+    assamblyfile<< "D=M"<<endl;
+    assamblyfile<< "@SP"<<endl;
+    assamblyfile<< "M=M-1"<<endl;
+    assamblyfile<< "@"<<label<<endl;
+    assamblyfile<< "D;JGT"<<endl;
+
+}
+
+

@@ -13,6 +13,10 @@ class Codewriter
         ~Codewriter();
         void WriteArithmetic(string command);
         void WritePushPop(string cmdtype, string segment,int index,string inputfile);
+        void WriteInit();// Write bootstarp code
+        void WriteLabel(string label);
+        void WriteGoto(string label);
+        void WriteIf(string label);
 
     protected:
 
