@@ -36,7 +36,7 @@ int main(int argc,char* argv[])
             cout << "current command is : " <<parser.currentCommand<< endl;
             cout << "command type is : " <<parser.commandType()<< endl;
             cout <<"argument 1 is :" <<parser.arg1()<<endl;
-            //cout <<"argument 2 is :" <<parser.arg2()<<endl<<endl;
+            cout <<"argument 2 is :" <<parser.arg2()<<endl<<endl;
 
             if (parser.commandType()=="C_ARITHMETIC")
             {

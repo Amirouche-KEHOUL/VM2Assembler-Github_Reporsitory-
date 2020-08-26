@@ -42,8 +42,8 @@ const string Parser::commandType()//returns a const represent the type of the co
     while ((currentCommand[i]!=' ')&&(i!=currentCommand.size()))
     {
 
-            command=command+currentCommand[i];
-            i=i+1;
+        command=command+currentCommand[i];
+        i=i+1;
 
     }
     return map_typeofcommand[command];
@@ -129,12 +129,24 @@ int  Parser::arg2()// returns the second arg of the current command
     if (commandType()=="C_POP"||commandType()=="C_PUSH"||commandType()=="C_FUNCTION"||commandType()=="C_CALL")
     {
         int i=0;
-        while (currentCommand[currentCommand.size()-i]!=' ')
+
+        // handle in line comments using separating space within the same command
+        int j=0;
+        while (j<2)
         {
-            arg=arg+currentCommand[currentCommand.size()-i];
+            if (currentCommand[i]==' ')
+            {
+                j=j+1;
+            }
             i=i+1;
         }
-        reverse(arg.begin(),arg.end());
+
+        while (currentCommand[i]!=' '&& currentCommand[i]!='/' && i!=currentCommand.size())
+        {
+            arg=arg+currentCommand[i];
+            i=i+1;
+        }
+
         return stoi(arg);// convert string to int
     }
 
