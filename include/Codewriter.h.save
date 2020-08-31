@@ -6,7 +6,7 @@ class Codewriter
         ofstream assamblyfile;
         string commandtowrite;
         string filename;
-        int numRet=1;
+        int numRet; 
         int inceqlabel=0;// inc eq command label
         int incgtlabel=0;// inc gt command label
         int incltlabel=0;// inc lt command label
@@ -14,14 +14,15 @@ class Codewriter
         Codewriter(string outfilename);
         ~Codewriter();
         void WriteArithmetic(string command);
-        void WritePushPop(string cmdtype, string segment,int index);
+        void WritePushPop(string cmdtype, string segment,int index,string inputfile);
         void WriteInit();// Write bootstarp code
         void WriteLabel(string label);
         void WriteGoto(string label);
         void WriteIf(string label);
         void WriteCall(string functionName, int numArgs);
-        void WriteFunction(string functionName,int numLocals);
         void WriteReturn();
+        void WriteFunction(string functionName,int numLocals);
+
     protected:
 
     private:

@@ -21,8 +21,7 @@ int main(int argc,char* argv[])
     string inputfilename; // input file name
     inputfilename=argv[1]; // get arg1
     if (IsPathExist(argv[1]))
-    {
-        //code here if directory
+    {   //code here if directory
 
 
     }
@@ -53,23 +52,19 @@ int main(int argc,char* argv[])
             }
             if (parser.commandType()=="C_GOTO")
             {
-                assamblyfile.WriteGoto(parser.arg1());
+                 assamblyfile.WriteGoto(parser.arg1());
             }
             if (parser.commandType()=="C_IF")
             {
-                assamblyfile.WriteIf(parser.arg1());
+                 assamblyfile.WriteIf(parser.arg1());
             }
             if (parser.commandType()=="C_CALL")
             {
-                assamblyfile.WriteCall(parser.arg1(),parser.arg2());
-            }
+                 assamblyfile.WriteCall(parser.arg1(),parser.arg2());
+            }            
             if (parser.commandType()=="C_FUNCTION")
             {
-                assamblyfile.WriteFunction(parser.arg1(),parser.arg2());
-            }
-            if (parser.commandType()=="C_RETURN")
-            {
-                assamblyfile.WriteReturn();
+                 assamblyfile.WriteFunction(parser.arg1(),parser.arg2());
             }
         }
 

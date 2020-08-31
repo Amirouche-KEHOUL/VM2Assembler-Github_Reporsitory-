@@ -588,21 +588,21 @@ void Codewriter::WriteReturn()
     assamblyfile<< "A=D-1" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@THAT" <<endl;
-    assamblyfile<< "M=D" <<endl;
+    assamblyfile<< "M=D" <<endl;    
     //restore THIS of the caller THIS =*(FRAME-2), FRAME =temp[0]
     assamblyfile<< "@5" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "A=D-2" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@THIS" <<endl;
-    assamblyfile<< "M=D" <<endl;
+    assamblyfile<< "M=D" <<endl;    
     //restore THIS of the caller ARG =*(FRAME-3), FRAME =temp[0]
     assamblyfile<< "@5" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "A=D-3" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@ARG" <<endl;
-    assamblyfile<< "M=D" <<endl;
+    assamblyfile<< "M=D" <<endl;    
     //restore THIS of the caller ARG =*(FRAME-4), FRAME =temp[0]
     assamblyfile<< "@5" <<endl;
     assamblyfile<< "D=M" <<endl;
@@ -610,9 +610,5 @@ void Codewriter::WriteReturn()
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@LCL" <<endl;
     assamblyfile<< "M=D" <<endl;
-    //goto RET (return @)
-    assamblyfile<< "@6" <<endl;
-    assamblyfile<< "A=M" <<endl;
-    assamblyfile<< "0;JMP"<<endl;
 
 }

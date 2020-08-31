@@ -131,6 +131,7 @@ int  Parser::arg2()// returns the second arg of the current command
         int i=0;
         // handle in line comments using separating space within the same command
         int j=0;
+
         while (j<2)
         {
             if (currentCommand[i]==' ')
@@ -139,14 +140,19 @@ int  Parser::arg2()// returns the second arg of the current command
             }
             i=i+1;
         }
-
-        while (currentCommand[i]!=' '&& currentCommand[i]!='/' && i!=currentCommand.size())
+       //cout <<"i="<<i<<endl;
+       // i=i-1;
+        while (currentCommand[i]!=' '&& currentCommand[i]!='/')
         {
             arg=arg+currentCommand[i];
             i=i+1;
         }
+        //reverse(arg.begin(),arg.end());
 
-        return stoi(arg);// convert string to int
+        //cout <<"test arg2"<<arg<<endl;
+        cout <<"i="<<i<<"   j="<<j<<endl;
+
+        //return stoi(arg);// convert string to int
     }
 
 }
