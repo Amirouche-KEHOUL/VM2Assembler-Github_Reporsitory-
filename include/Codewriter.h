@@ -6,7 +6,7 @@ class Codewriter
         ofstream assamblyfile;
         string commandtowrite;
         string filename;
-        int numRet=1;
+        int numRet=1; // used to generates different labels for function call by incrementing it
         int inceqlabel=0;// inc eq command label
         int incgtlabel=0;// inc gt command label
         int incltlabel=0;// inc lt command label

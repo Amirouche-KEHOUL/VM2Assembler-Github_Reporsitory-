@@ -58,7 +58,12 @@ string Parser::arg1()// returns the first arg of the current command
 
         if (commandType()=="C_ARITHMETIC")
         {
-            arg=currentCommand;
+            int i=0;
+            while ((currentCommand[i]!=' ')&& i<currentCommand.size())
+            {
+                arg=arg+currentCommand[i];
+                i++;
+            }
         }
         else
         {
