@@ -1,11 +1,19 @@
 #include "Codewriter.h"
 #include "Parser.h"
+
 using namespace std;
 
 Codewriter::Codewriter(string outfilename)
 {
     assamblyfile.open(outfilename);
     filename=outfilename.substr(0,outfilename.size()-4);
+    auto found= filename.find("/"); //check for '/' char and replace it with '_'
+    if (found!=string::npos)
+    {
+           filename.replace(found,1,"_");
+
+    }
+
 }
 Codewriter::~Codewriter()
 {
@@ -14,7 +22,9 @@ void Codewriter::WriteArithmetic(string command)
 {
     if (command=="add")
     {
+#if (debug==1)
         assamblyfile<<"//add"<<endl;
+#endif
         assamblyfile<<"@SP"<<endl;
         assamblyfile<<"A=M-1"<<endl;
         assamblyfile<<"D=M"<<endl;
@@ -27,7 +37,9 @@ void Codewriter::WriteArithmetic(string command)
     }
     if (command=="sub")
     {
+#if (debug==1)
         assamblyfile<<"//sub"<<endl;
+#endif
         assamblyfile<<"@SP"<<endl;
         assamblyfile<<"A=M-1"<<endl;
         assamblyfile<<"D=M"<<endl;
@@ -40,14 +52,18 @@ void Codewriter::WriteArithmetic(string command)
     }
     if (command=="neg")
     {
+#if (debug==1)
         assamblyfile<<"//neg"<<endl;
+#endif
         assamblyfile<<"@SP"<<endl;
         assamblyfile<<"A=M-1"<<endl;
         assamblyfile<<"M=-M"<<endl;
     }
     if (command=="eq")
     {
+#if (debug==1)
         assamblyfile<< "//eq"<<endl;
+#endif
         assamblyfile<< "@SP"<<endl;
         assamblyfile<< "A=M-1"<<endl;
         assamblyfile<< "D=M"<<endl;
@@ -61,7 +77,7 @@ void Codewriter::WriteArithmetic(string command)
         assamblyfile<< "@SP"<<endl;
         assamblyfile<< "A=M-1"<<endl;
         assamblyfile<< "A=A-1"<<endl;
-        assamblyfile<< "M=-1"<<endl;
+        assamblyfile<< "M=1"<<endl;
         assamblyfile<< "@eq_end_"<<inceqlabel<<endl;
         assamblyfile<< "0;JMP"<<endl;
         assamblyfile<< "(eq_noteq_"<<inceqlabel<<")"<<endl;
@@ -77,7 +93,9 @@ void Codewriter::WriteArithmetic(string command)
     }
     if (command=="gt")
     {
+#if (debug==1)
         assamblyfile<< "//gt"<<endl;
+#endif
         assamblyfile<< "@SP"<<endl;
         assamblyfile<< "A=M-1"<<endl;
         assamblyfile<< "D=M"<<endl;
@@ -98,7 +116,7 @@ void Codewriter::WriteArithmetic(string command)
         assamblyfile<< "@SP"<<endl;
         assamblyfile<< "A=M-1"<<endl;
         assamblyfile<< "A=A-1"<<endl;
-        assamblyfile<< "M=-1"<<endl;
+        assamblyfile<< "M=1"<<endl;
         assamblyfile<< "(gt_end_"<<incgtlabel<<")"<<endl;
         assamblyfile<< "@SP "<<endl;
         assamblyfile<< "M=M-1"<<endl;
@@ -106,7 +124,9 @@ void Codewriter::WriteArithmetic(string command)
     }
     if (command=="lt")
     {
+#if (debug==1)  
         assamblyfile<< "//lt"<<endl;
+#endif
         assamblyfile<< "@SP"<<endl;
         assamblyfile<< "A=M-1"<<endl;
         assamblyfile<< "D=M"<<endl;
@@ -127,7 +147,7 @@ void Codewriter::WriteArithmetic(string command)
         assamblyfile<< "@SP"<<endl;
         assamblyfile<< "A=M-1"<<endl;
         assamblyfile<< "A=A-1"<<endl;
-        assamblyfile<< "M=-1"<<endl;
+        assamblyfile<< "M=1"<<endl;
         assamblyfile<< "(lt_end_"<<incltlabel<<")"<<endl;
         assamblyfile<< "@SP "<<endl;
         assamblyfile<< "M=M-1"<<endl;
@@ -136,7 +156,9 @@ void Codewriter::WriteArithmetic(string command)
     }
     if (command=="and")
     {
+#if (debug==1) 
         assamblyfile<< "//and"<<endl;
+#endif        
         assamblyfile<< "@SP"<<endl;
         assamblyfile<< "A=M-1"<<endl;
         assamblyfile<< "D=M"<<endl;
@@ -150,7 +172,9 @@ void Codewriter::WriteArithmetic(string command)
     if (command=="or")
     {
 
+#if (debug==1)
         assamblyfile<< "//or"<<endl;
+#endif
         assamblyfile<< "@SP"<<endl;
         assamblyfile<< "A=M-1"<<endl;
         assamblyfile<< "D=M"<<endl;
@@ -163,7 +187,9 @@ void Codewriter::WriteArithmetic(string command)
     }
     if (command=="not")
     {
+#if (debug==1)  
         assamblyfile<<"//not"<<endl;
+        #endif
         assamblyfile<<"@SP"<<endl;
         assamblyfile<<"A=M-1"<<endl;
         assamblyfile<<"M=!M"<<endl;
@@ -175,7 +201,9 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
     {
         if (segment=="local")
         {
+            #if (debug==1)
             assamblyfile<< "//push local"<<endl;
+            #endif
             assamblyfile<< "@"<<index<<endl;
             assamblyfile<< "D=A"<<endl;
             assamblyfile<< "@LCL"<<endl;
@@ -189,7 +217,9 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
         }
         if (segment=="argument")
         {
+            #if (debug==1)
             assamblyfile<< "//push argument"<<endl;
+            #endif
             assamblyfile<< "@"<<index<<endl;
             assamblyfile<< "D=A"<<endl;
             assamblyfile<< "@ARG"<<endl;
@@ -203,7 +233,9 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
         }
         if (segment=="this")
         {
+            #if (debug==1)
             assamblyfile<< "//push this"<<endl;
+            #endif
             assamblyfile<< "@"<<index<<endl;
             assamblyfile<< "D=A"<<endl;
             assamblyfile<< "@THIS"<<endl;
@@ -217,7 +249,9 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
         }
         if (segment=="that")
         {
+            #if (debug==1)
             assamblyfile<< "//push that"<<endl;
+            #endif
             assamblyfile<< "@"<<index<<endl;
             assamblyfile<< "D=A"<<endl;
             assamblyfile<< "@THAT"<<endl;
@@ -231,7 +265,9 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
         }
         if (segment=="constant")
         {
+            #if (debug==1)
             assamblyfile<< "//push constant"<<endl;
+           #endif
             assamblyfile<< "@"<<index<<endl;
             assamblyfile<< "D=A"<<endl;
             assamblyfile<< "@SP"<<endl;
@@ -242,7 +278,9 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
         }
         if (segment=="static")
         {
+            #if (debug==1)
             assamblyfile<< "//push static"<<endl;
+            #endif
             assamblyfile<< "@"<<filename<<"."<<index<<endl;
             assamblyfile<< "D=M"<<endl;
             assamblyfile<< "@SP"<<endl;
@@ -253,7 +291,9 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
         }
         if (segment=="temp")
         {
+            #if (debug==1)
             assamblyfile<< "//push temp"<<endl;
+            #endif
             assamblyfile<< "@"<<index<<endl;
             assamblyfile<< "D=A"<<endl;
             assamblyfile<< "@5"<<endl;
@@ -269,7 +309,9 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
         {
             if (index==0)
             {
+                #if (debug==1)
                 assamblyfile<< "//push pointer THIS"<<endl;
+                #endif
                 assamblyfile<< "@THIS"<<endl;
                 assamblyfile<< "D=M"<<endl;
                 assamblyfile<< "@SP"<<endl;
@@ -280,7 +322,9 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
             }
             if (index==1)
             {
+                #if (debug==1)
                 assamblyfile<< "//push pointer THAT"<<endl;
+                #endif
                 assamblyfile<< "@THAT"<<endl;
                 assamblyfile<< "D=M"<<endl;
                 assamblyfile<< "@SP"<<endl;
@@ -298,7 +342,9 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
     {
         if (segment=="local")
         {
+            #if (debug==1)
             assamblyfile<< "//pop local"<<endl;
+            #endif
             assamblyfile<< "@"<<index<<endl;
             assamblyfile<< "D=A"<<endl;
             assamblyfile<< "@LCL"<<endl;
@@ -319,6 +365,7 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
         }
         if (segment=="argument")
         {
+            
             assamblyfile<< "//pop argument"<<endl;
             assamblyfile<< "@"<<index<<endl;
             assamblyfile<< "D=A"<<endl;
@@ -445,6 +492,64 @@ void Codewriter::WriteInit()
     assamblyfile<< "D=A"<<endl;
     assamblyfile<< "@0"<<endl;
     assamblyfile<< "M=D"<<endl;
+    assamblyfile<< "//Call Sys.init  "<<endl;
+    //push return address
+    assamblyfile<<"@Sys.init."<<"RetAdd."<<numRet<<endl;
+    assamblyfile<<"D=A"<<endl;
+    assamblyfile<<"@SP"<<endl;
+    assamblyfile<<"A=M"<<endl;
+    assamblyfile<<"M=D"<<endl;
+    assamblyfile<<"@SP"<<endl;
+    assamblyfile<<"@SP"<<endl;
+    assamblyfile<<"M=M+1"<<endl;
+    //push LCL, ARG, THIS, THAT
+    for (int i=1; i<5; i++)
+    {
+        if (i==1)
+        {
+            assamblyfile<<"@LCL"<<endl;
+        }
+        if (i==2)
+        {
+            assamblyfile<<"@ARG"<<endl;
+        }
+        if (i==3)
+        {
+            assamblyfile<<"@THIS"<<endl;
+        }
+        if (i==4)
+        {
+            assamblyfile<<"@THAT"<<endl;
+        }
+        assamblyfile<<"D=M"<<endl;
+        assamblyfile<<"@SP"<<endl;
+        assamblyfile<<"A=M"<<endl;
+        assamblyfile<<"M=D"<<endl;
+        assamblyfile<<"@SP"<<endl;
+        assamblyfile<<"M=M+1"<<endl;
+    }
+    //ARG = SP-5-n
+    assamblyfile<<"@SP"<<endl;
+    assamblyfile<<"D=M"<<endl;
+    assamblyfile<<"@5"<<endl;
+    assamblyfile<<"D=D-A"<<endl;
+    assamblyfile<<"@0"<<endl;
+    assamblyfile<<"D=D-A"<<endl;
+    assamblyfile<<"@ARG"<<endl;
+    assamblyfile<<"M=D"<<endl;
+    //LCL=SP
+    assamblyfile<<"@SP"<<endl;
+    assamblyfile<<"D=M"<<endl;
+    assamblyfile<<"@LCL"<<endl;
+    assamblyfile<<"M=D"<<endl;
+    //goto called function
+    assamblyfile<<"@Sys.init"<<endl;
+    assamblyfile<<"0;JMP"<<endl;
+    //return address
+    assamblyfile<<"(Sys.init."<<"RetAdd."<<numRet<<")"<<endl;//set a unique return address label
+    numRet++;// increment
+    assamblyfile<<"//End of Bootstrap code"<<endl;
+
 }
 void Codewriter::WriteLabel(string label)
 {
@@ -481,8 +586,9 @@ void Codewriter::WriteCall(string functionName, int numArgs)
     assamblyfile<<"A=M"<<endl;
     assamblyfile<<"M=D"<<endl;
     assamblyfile<<"@SP"<<endl;
+    assamblyfile<<"M=M+1"<<endl;
     //push LCL, ARG, THIS, THAT
-    for (int i=0; i<5; i++)
+    for (int i=1; i<5; i++)
     {
         if (i==1)
         {
@@ -525,7 +631,7 @@ void Codewriter::WriteCall(string functionName, int numArgs)
     assamblyfile<<"@"<<functionName<<endl;
     assamblyfile<<"0;JMP"<<endl;
     //return address
-    assamblyfile<<"("<< filename<<"$"<<"Ret."<<numRet<<")"<<endl;//set a unique return address label
+    assamblyfile<<"("<< filename<<"."<<"RetAdd."<<numRet<<")"<<endl;//set a unique return address label
     numRet++;// increment
 }
 void Codewriter::WriteFunction(string functionName,int numLocals)
@@ -534,7 +640,7 @@ void Codewriter::WriteFunction(string functionName,int numLocals)
     assamblyfile<<"//Declare function"<<endl;
     assamblyfile<<"("<<functionName<<")"<<endl;
     // repeat numLocals time push local 0 (initialize local vars)
-    for (int i=1; i>numLocals; i++)
+    for (int i=1; i<=numLocals; i++)
     {
         assamblyfile<< "@0" <<endl;
         assamblyfile<< "D=A" <<endl;
@@ -588,27 +694,34 @@ void Codewriter::WriteReturn()
     assamblyfile<< "A=D-1" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@THAT" <<endl;
-    assamblyfile<< "M=D" <<endl;    
+    assamblyfile<< "M=D" <<endl;
     //restore THIS of the caller THIS =*(FRAME-2), FRAME =temp[0]
     assamblyfile<< "@5" <<endl;
     assamblyfile<< "D=M" <<endl;
-    assamblyfile<< "A=D-2" <<endl;
+    assamblyfile<< "@2" <<endl;
+    assamblyfile<< "A=D-A" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@THIS" <<endl;
-    assamblyfile<< "M=D" <<endl;    
+    assamblyfile<< "M=D" <<endl;
     //restore THIS of the caller ARG =*(FRAME-3), FRAME =temp[0]
     assamblyfile<< "@5" <<endl;
     assamblyfile<< "D=M" <<endl;
-    assamblyfile<< "A=D-3" <<endl;
+    assamblyfile<< "@3" <<endl;
+    assamblyfile<< "A=D-A" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@ARG" <<endl;
-    assamblyfile<< "M=D" <<endl;    
+    assamblyfile<< "M=D" <<endl;
     //restore THIS of the caller ARG =*(FRAME-4), FRAME =temp[0]
     assamblyfile<< "@5" <<endl;
     assamblyfile<< "D=M" <<endl;
-    assamblyfile<< "A=D-4" <<endl;
+    assamblyfile<< "@4" <<endl;
+    assamblyfile<< "A=D-A" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@LCL" <<endl;
     assamblyfile<< "M=D" <<endl;
+    //goto RET (return @)
+    assamblyfile<< "@6" <<endl;
+    assamblyfile<< "A=M" <<endl;
+    assamblyfile<< "0;JMP"<<endl;
 
 }
