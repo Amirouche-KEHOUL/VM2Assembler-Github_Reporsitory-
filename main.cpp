@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#define DEBUG 1 // to show  DEBUG info
+#define DEBUG 0 // to show  DEBUG info
 
 using namespace std;
 ifstream avmfile;// input avm file
@@ -22,52 +22,62 @@ bool IsPathExist(const string &s)// check if file or directory
     return (stat (s.c_str(), &buffer) == 0);
 }
 
-string fileList[1]; // put here list of file names /!\ fileList[0]=inputFileOrDir
+vector<string> fileList; // put here list of file names /!\ fileList[0]=inputFileOrDir
 
 int main(int argc,char* argv[])
 {
     string inputFileOrDir; // input file name
     inputFileOrDir=argv[1]; // get arg1
-    fileList[0]=inputFileOrDir;
+    fileList.push_back(inputFileOrDir);
 
     if (IsPathExist(argv[1]))
-    {
-        //if directory
+    {//if directory
+
         cout <<"Input is a directory"<<endl;
         string currentFile;// stream out file names from the folder
-        int i=2; // for if loop below (as index to fileList
         DIR *dr;
         struct dirent *en;
         dr = opendir(argv[1]); //open all directory
         if (dr)
         {
             //fill fileList
+            int i=2; // for if loop below (as index to fileList)
             while ((en = readdir(dr)) != NULL)
             {
                 currentFile=en->d_name;
+
                 if (currentFile.size()>3)//d_name could be of size 1 or 2 --> TBC why ?  here just to filter those results
                 {
                     if (currentFile.substr(currentFile.size()-2,2)=="vm")//fill fileList
                     {
+                        cout <<"condition is true"<<endl;
+                        cout <<"current file is "<<currentFile<<endl;
                         if (currentFile=="Sys.vm")
                         {
-                            fileList[1]=currentFile;
+                            fileList.insert(fileList.begin()+1,currentFile);
+                            cout <<"fileList["<<1<<"] = "<<fileList[1]<<endl;
                         }
                         else
                         {
-                            fileList[i]=currentFile;
+                            fileList.push_back(currentFile);
+                            cout <<"put here else statement, i is equal to : "<<i<<endl<<endl;
+
                         }
                         i++;
                     }
+
                 }
+
             }
+            cout <<"Vector size = "<<fileList.size()<<endl;
+            //cout <<"fileList["<<1<<"] = "<<fileList[1]<<endl;
             closedir(dr); //close all directory
         }
 
         Codewriter assamblyfile(fileList[0]+".asm"); // create a Codewriter object
         assamblyfile.WriteInit(); // write bootstrap code
 
-        for (int i=1; fileList[i]!=""; i++)
+        for (int i=1; i<fileList.size(); i++)
 
         {
             Parser parser(inputFileOrDir+"/"+fileList[i]); // create a Parser object
@@ -119,8 +129,8 @@ int main(int argc,char* argv[])
 
     }
     else
-    {
-        // if one file directory
+    {// if one file
+
         cout <<"Input is a file"<<endl;
         Codewriter assamblyfile(fileList[0]+".asm"); // create a Codewriter object
         assamblyfile.WriteInit(); // write bootstrap code
