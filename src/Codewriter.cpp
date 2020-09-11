@@ -313,6 +313,7 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
             {
 #if (DEBUG==1)
                 assamblyfile<< "//push pointer THIS"<<endl;
+                //We use it for storing the base addresses of the segments this (0)
 #endif
                 assamblyfile<< "@THIS"<<endl;
                 assamblyfile<< "D=M"<<endl;
@@ -326,7 +327,7 @@ void Codewriter::WritePushPop(string cmdtype, string segment,int index)
             {
 #if (DEBUG==1)
                 assamblyfile<< "//push pointer THAT"<<endl;
-#endif
+#endif          //We use it for storing the base addresses of the segments that(1)
                 assamblyfile<< "@THAT"<<endl;
                 assamblyfile<< "D=M"<<endl;
                 assamblyfile<< "@SP"<<endl;
@@ -671,14 +672,9 @@ void Codewriter::WriteFunction(string functionName,int numLocals)
     // repeat numLocals time push local 0 (initialize local vars)
     for (int i=1; i<=numLocals; i++)
     {
-        assamblyfile<< "@0" <<endl;
-        assamblyfile<< "D=A" <<endl;
-        assamblyfile<< "@LCL" <<endl;
-        assamblyfile<< "A=D+M" <<endl;
-        assamblyfile<< "D=M" <<endl;
         assamblyfile<< "@SP" <<endl;
         assamblyfile<< "A=M" <<endl;
-        assamblyfile<< "M=D" <<endl;
+        assamblyfile<< "M=0" <<endl;
         assamblyfile<< "@SP" <<endl;
         assamblyfile<< "M=M+1" <<endl;
     }
@@ -691,15 +687,15 @@ void Codewriter::WriteReturn()
 #endif
     assamblyfile<< "@LCL"<<endl;
     assamblyfile<< "D=M"<<endl;
-    assamblyfile<< "@5"<<endl;
+    assamblyfile<< "@7"<<endl;
     assamblyfile<< "M=D"<<endl;
     //put the return @ in a temp var (RET = *(temp[1]-5))
-    assamblyfile<< "@5" <<endl;
+    assamblyfile<< "@7" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@5" <<endl;
     assamblyfile<< "A=D-A" <<endl;
     assamblyfile<< "D=M" <<endl;
-    assamblyfile<< "@6" <<endl;
+    assamblyfile<< "@8" <<endl;
     assamblyfile<< "M=D" <<endl;
     //reposition the return value for the caller *ARG = pop()
     assamblyfile<< "@ARG" <<endl;
@@ -720,14 +716,14 @@ void Codewriter::WriteReturn()
     assamblyfile<< "@SP" <<endl;
     assamblyfile<< "M=D+1" <<endl;
     //restore THAT of the caller THAT =*(FRAME-1), FRAME =temp[0]
-    assamblyfile<< "@5" <<endl;
+    assamblyfile<< "@7" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "A=D-1" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@THAT" <<endl;
     assamblyfile<< "M=D" <<endl;
     //restore THIS of the caller THIS =*(FRAME-2), FRAME =temp[0]
-    assamblyfile<< "@5" <<endl;
+    assamblyfile<< "@7" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@2" <<endl;
     assamblyfile<< "A=D-A" <<endl;
@@ -735,7 +731,7 @@ void Codewriter::WriteReturn()
     assamblyfile<< "@THIS" <<endl;
     assamblyfile<< "M=D" <<endl;
     //restore THIS of the caller ARG =*(FRAME-3), FRAME =temp[0]
-    assamblyfile<< "@5" <<endl;
+    assamblyfile<< "@7" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@3" <<endl;
     assamblyfile<< "A=D-A" <<endl;
@@ -743,7 +739,7 @@ void Codewriter::WriteReturn()
     assamblyfile<< "@ARG" <<endl;
     assamblyfile<< "M=D" <<endl;
     //restore THIS of the caller ARG =*(FRAME-4), FRAME =temp[0]
-    assamblyfile<< "@5" <<endl;
+    assamblyfile<< "@7" <<endl;
     assamblyfile<< "D=M" <<endl;
     assamblyfile<< "@4" <<endl;
     assamblyfile<< "A=D-A" <<endl;
@@ -751,7 +747,7 @@ void Codewriter::WriteReturn()
     assamblyfile<< "@LCL" <<endl;
     assamblyfile<< "M=D" <<endl;
     //goto RET (return @)
-    assamblyfile<< "@6" <<endl;
+    assamblyfile<< "@8" <<endl;
     assamblyfile<< "A=M" <<endl;
     assamblyfile<< "0;JMP"<<endl;
 
