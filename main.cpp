@@ -24,6 +24,9 @@ bool IsPathExist(const string &s)// check if file or directory
 
 vector<string> fileList; // put here list of file names /!\ fileList[0]=inputFileOrDir
 
+
+
+
 int main(int argc,char* argv[])
 {
     string inputFileOrDir; // input file name
@@ -50,18 +53,13 @@ int main(int argc,char* argv[])
                 {
                     if (currentFile.substr(currentFile.size()-2,2)=="vm")//fill fileList
                     {
-                        cout <<"condition is true"<<endl;
-                        cout <<"current file is "<<currentFile<<endl;
                         if (currentFile=="Sys.vm")
                         {
                             fileList.insert(fileList.begin()+1,currentFile);
-                            cout <<"fileList["<<1<<"] = "<<fileList[1]<<endl;
                         }
                         else
                         {
                             fileList.push_back(currentFile);
-                            cout <<"put here else statement, i is equal to : "<<i<<endl<<endl;
-
                         }
                         i++;
                     }
@@ -69,16 +67,11 @@ int main(int argc,char* argv[])
                 }
 
             }
-            cout <<"Vector size = "<<fileList.size()<<endl;
-            //cout <<"fileList["<<1<<"] = "<<fileList[1]<<endl;
             closedir(dr); //close all directory
         }
-
         Codewriter assamblyfile(fileList[0]+".asm"); // create a Codewriter object
         assamblyfile.WriteInit(); // write bootstrap code
-
         for (int i=1; i<fileList.size(); i++)
-
         {
             Parser parser(inputFileOrDir+"/"+fileList[i]); // create a Parser object
             while (parser.hasMoreCommands())
@@ -97,7 +90,7 @@ int main(int argc,char* argv[])
                 }
                 if (parser.commandType()=="C_POP"||parser.commandType()=="C_PUSH")
                 {
-                    assamblyfile.WritePushPop(parser.commandType(),parser.arg1(),parser.arg2());
+                    assamblyfile.WritePushPop(parser.commandType(),parser.arg1(),parser.arg2(),fileList[i].substr(0,fileList[i].size()-3));
                 }
                 if (parser.commandType()=="C_LABEL")
                 {
@@ -124,9 +117,7 @@ int main(int argc,char* argv[])
                     assamblyfile.WriteReturn();
                 }
             }
-
         }
-
     }
     else
     {// if one file
@@ -150,7 +141,7 @@ int main(int argc,char* argv[])
             }
             if (parser.commandType()=="C_POP"||parser.commandType()=="C_PUSH")
             {
-                assamblyfile.WritePushPop(parser.commandType(),parser.arg1(),parser.arg2());
+                assamblyfile.WritePushPop(parser.commandType(),parser.arg1(),parser.arg2(),"");
             }
             if (parser.commandType()=="C_LABEL")
             {
